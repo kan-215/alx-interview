@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """
-Pascal triangle formation
+A function to form a Pascal triangle
 """
 
 
 def pascal_triangle(n):
     """
-    Pascal triangle functon defination
-    arg: n : This is is the positve integer being passed on
+    Pascal triangle functon.
+    arg: n : positve integer to be passed
     """
     if n <= 0:
         return []
