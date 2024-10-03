@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """
-def pascal_triangle(n): that returns a list of lists of integers representing the Pascal’s triangle of n:
+Pascal triangle formation
 """
 
 
 def pascal_triangle(n):
     """
-    Pascal triangle functon
-    arg: n : positve integer being passed on
+    Pascal triangle functon defination
+    arg: n : This is is the positve integer being passed on
     """
     if n <= 0:
         return []
