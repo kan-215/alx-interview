@@ -4,12 +4,6 @@
 def minOperations(n):
     """
     Calculates the minimum number of operations required to generate exactly n H characters.
-    
-    Args:
-        n (int): The target number of H characters.
-        
-    Returns:
-        int: The fewest number of operations needed to achieve exactly n H characters.
     """
     # If n is less than 2, no operations are possible
     if n < 2:
