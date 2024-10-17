@@ -1,26 +1,32 @@
 #!/usr/bin/python3
-""" 0-minoperations module"""
-
+""" Module to determine minimum operations for n H characters """
 
 def minOperations(n):
     """
     Calculates the minimum number of operations required to generate exactly n H characters.
+    
+    Args:
+        n (int): The target number of H characters.
+        
+    Returns:
+        int: The fewest number of operations needed to achieve exactly n H characters.
     """
-
-    # all outputs should be at least 2 char: (min, Copy All => Paste)
-    if (n < 2):
+    # If n is less than 2, no operations are possible
+    if n < 2:
         return 0
-    operations =0
-    divisor = 2
+
+    operations = 0  # Tracks the total operations performed
+    divisor = 2     # Start checking divisors from 2
+
     while divisor <= n:
-        # if n evenly divides by root
+        # If the current divisor divides n evenly
         if n % divisor == 0:
-            # total even-divisions by root = total operations
+            # Add the divisor to the operation count
             operations += divisor
-            # set n to the remainder
-            n = n / divisor
-            # reduce root to find remaining smaller vals that evenly-divide n
-            divisor -= 1
-        # increment root until it evenly-divides n
-        divisor += 1
+            # Divide n by the divisor to reduce its size
+            n //= divisor
+        else:
+            # Move to the next potential divisor
+            divisor += 1
+
     return operations
