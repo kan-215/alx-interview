@@ -2,7 +2,6 @@
 """ Module to determine minimum operations for n H characters """
 
 def minOperations(n):
-    """ Calculates the minimum number of operations required to generate exactly n H characters."""
     # If n is less than 2, no operations are possible
     if n < 2:
         return 0
