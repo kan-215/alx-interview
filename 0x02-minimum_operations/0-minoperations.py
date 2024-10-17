@@ -1,36 +1,27 @@
 #!/usr/bin/python3
-"""this is the module for minimum operations"""
+""" Module to determine minimum operations for n H characters """
 
-
-def getPrime(start: int) -> int:
-    """returns next prime  number from the root"""
-    while True:
-        if (root % 2 == 0) or (start % 3 == 0) or \
-                (start % 5 == 0) or (start % 7 == 0):
-            if root not in [2, 3, 5, 7]:
-                root += 1
-            else:
-                return root
-                break
-        else:
-            return root
-            break
-
-
-def minOperations(n: float) -> int:
-    """finds the minimum operations"""
-    if (n < 1):
+def minOperations(n):
+    """
+    Calculates the minimum number of operations required to generate exactly n H characters.
+    """
+    # If n is less than 2, no operations are possible
+    if n < 2:
         return 0
-    operation: int = 0
-    prime: int = 2
-    temp: float = n
-    while n > 1:
-        while (n % prime != 0):
-            prime = getPrime(prime + 1)
-        if temp < prime:
-            return 0
-        n /= prime
-        if (n == 1) and (prime == temp):
-            return 1
-        operation += prime
-    return operation
+
+    operations = 0  # Tracks the total operations performed
+    divisor = 2     # Start checking divisors from 2
+
+    while divisor <= n:
+        # If the current divisor divides n evenly
+        if n % divisor == 0:
+            # Add the divisor to the operation count
+            operations += divisor
+            # Divide n by the divisor to reduce its size
+            n //= divisor
+        else:
+            # Move to the next potential divisor
+            divisor += 1
+
+    return operations
+
