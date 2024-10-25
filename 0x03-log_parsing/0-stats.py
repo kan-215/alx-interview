@@ -5,16 +5,16 @@ import sys
 
 def print_stats(status_counts, total_size):
     """
-    Displays cumulative metrics based on log data.
+    Function to print cumulative log statistics.
 
     Args:
-        status_counts (dict): Dictionary storing counts for each HTTP status code.
-        total_size (int): Total accumulated file size from logs.
+        status_counts (dict): Dictionary holding status code counts.
+        total_size (int): Sum of all log file sizes.
     """
     print("File size: {}".format(total_size))
-    for status in sorted(status_counts.keys()):
-        if status_counts[status] > 0:
-            print("{}: {}".format(status, status_counts[status]))
+    for code in sorted(status_counts.keys()):
+        if status_counts[code] > 0:
+            print("{}: {}".format(code, status_counts[code]))
 
 
 if __name__ == "__main__":
@@ -27,24 +27,24 @@ if __name__ == "__main__":
             parts = line.split()
 
             if len(parts) > 6:
-                # Extract the status code and file size
+                # Parse and update the status code and file size
                 status_code = parts[-2]
                 file_size = parts[-1]
 
-                # Update the total file size
+                # Update total file size
                 try:
                     total_size += int(file_size)
                 except ValueError:
                     continue
 
-                # Update the count for the status code if it's valid
+                # Update status code count if valid
                 if status_code in status_codes:
                     status_codes[status_code] += 1
 
-                # Increment the line count
+                # Increment line count
                 line_count += 1
 
-                # Print metrics every 10 lines
+                # Print stats every 10 lines
                 if line_count % 10 == 0:
                     print_stats(status_codes, total_size)
 
@@ -52,5 +52,5 @@ if __name__ == "__main__":
         print_stats(status_codes, total_size)
         raise
 
-    # Print final statistics after reading all lines
+    # Final stats output after stdin completes
     print_stats(status_codes, total_size)
