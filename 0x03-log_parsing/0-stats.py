@@ -44,7 +44,7 @@ try:
                 code = parsed_line[1]
 
                 if (code in dict_st.keys()):
-                    dict_sc[code] += 1
+                    dict_st[code] += 1
 
             if (counter == 10):
                 print_msg(dict_st, total_size)
