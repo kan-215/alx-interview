@@ -2,59 +2,53 @@
 
 import sys
 
-def display_metrics(status_counts, total_size):
+
+def print_msg(dict_sc, total_file_size):
     """
-    Function to output metrics
+    Method to print
     Args:
-        status_counts: Dictionary of status codes and counts
-        total_size: Cumulative file size
+        dict_sc: dict of status codes
+        total_file_size: total of the file
     Returns:
-        None
+        Nothing
     """
-    print("File size: {}".format(total_size))
-    for key, count in sorted(status_counts.items()):
-        if count != 0:
-            print("{}: {}".format(key, count))
+
+    print("File size: {}".format(total_file_size))
+    for key, val in sorted(dict_sc.items()):
+        if val != 0:
+            print("{}: {}".format(key, val))
 
 
-# Initialize cumulative size and counters
-total_size = 0
-status_code = 0
-line_counter = 0
-status_counts = {
-    "200": 0,
-    "301": 0,
-    "400": 0,
-    "401": 0,
-    "403": 0,
-    "404": 0,
-    "405": 0,
-    "500": 0
-}
+total_file_size = 0
+code = 0
+counter = 0
+dict_sc = {"200": 0,
+           "301": 0,
+           "400": 0,
+           "401": 0,
+           "403": 0,
+           "404": 0,
+           "405": 0,
+           "500": 0}
 
 try:
-    # Read each line from standard input
     for line in sys.stdin:
-        line_elements = line.split()  # Split by whitespace
-        line_elements = line_elements[::-1]  # Reverse for easier access to last elements
+        parsed_line = line.split()  # ✄ trimming
+        parsed_line = parsed_line[::-1]  # inverting
 
-        if len(line_elements) > 2:
-            line_counter += 1
+        if len(parsed_line) > 2:
+            counter += 1
 
-            if line_counter <= 10:
-                total_size += int(line_elements[0])  # Update total file size
-                status_code = line_elements[1]  # Capture status code
+            if counter <= 10:
+                total_file_size += int(parsed_line[0])  # file size
+                code = parsed_line[1]  # status code
 
-                # Update count for valid status code if present
-                if status_code in status_counts:
-                    status_counts[status_code] += 1
+                if (code in dict_sc.keys()):
+                    dict_sc[code] += 1
 
-            # Print every 10 lines
-            if line_counter == 10:
-                display_metrics(status_counts, total_size)
-                line_counter = 0
+            if (counter == 10):
+                print_msg(dict_sc, total_file_size)
+                counter = 0
 
 finally:
-    # Final output of metrics
-    display_metrics(status_counts, total_size)
-
+    print_msg(dict_sc, total_file_size)
