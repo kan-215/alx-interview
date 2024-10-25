@@ -2,9 +2,10 @@
 
 import sys
 
+
 def print_msg(dict_sc, total_file_size):
     """
-    Function to output the current metrics.
+    Function to output the current metrics
     Args:
         dict_sc: dictionary storing status codes and their counts
         total_file_size: cumulative file size
@@ -55,6 +56,6 @@ try:
                 print_msg(dict_sc, total_file_size)
                 counter = 0
 
-except KeyboardInterrupt:
-    # Print metrics on interruption (Ctrl+C)
+finally:
+    # Print final stats after loop or on exit
     print_msg(dict_sc, total_file_size)
