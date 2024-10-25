@@ -3,26 +3,26 @@
 import sys
 
 
-def print_msg(dict_sc, total_file_size):
+def print_msg(dict_st, total_size):
     """
     function to print
     Args:
-        dict_sc: dictionary of status codes
-        total_file_size: totalsize
+        dict_st: dictionary of status codes
+        total_size: totalsize
     Returns:
         Nothing
     """
 
-    print("File size: {}".format(total_file_size))
-    for key, val in sorted(dict_sc.items()):
+    print("File size: {}".format(total_size))
+    for key, val in sorted(dict_st.items()):
         if val != 0:
             print("{}: {}".format(key, val))
 
 
-total_file_size = 0
+total_size = 0
 code = 0
 counter = 0
-dict_sc = {"200": 0,
+dict_st = {"200": 0,
            "301": 0,
            "400": 0,
            "401": 0,
@@ -40,15 +40,15 @@ try:
             counter += 1
 
             if counter <= 10:
-                total_file_size += int(parsed_line[0])
+                total_size += int(parsed_line[0])
                 code = parsed_line[1]
 
-                if (code in dict_sc.keys()):
+                if (code in dict_st.keys()):
                     dict_sc[code] += 1
 
             if (counter == 10):
-                print_msg(dict_sc, total_file_size)
+                print_msg(dict_st, total_size)
                 counter = 0
 
 finally:
-    print_msg(dict_sc, total_file_size)
+    print_msg(dict_st, total_size)
