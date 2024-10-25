@@ -3,54 +3,52 @@
 import sys
 
 
-def print_stats(status_counts, total_size):
+def print_msg(dict_sc, total_file_size):
     """
-    Function to print cumulative log statistics.
-
+    function to print
     Args:
-        status_counts (dict): Dictionary holding status code counts.
-        total_size (int): Sum of all log file sizes.
+        dict_sc: dictionary of status codes
+        total_file_size: totalsize
+    Returns:
+        Nothing
     """
-    print("File size: {}".format(total_size))
-    for code in sorted(status_counts.keys()):
-        if status_counts[code] > 0:
-            print("{}: {}".format(code, status_counts[code]))
+
+    print("File size: {}".format(total_file_size))
+    for key, val in sorted(dict_sc.items()):
+        if val != 0:
+            print("{}: {}".format(key, val))
 
 
-if __name__ == "__main__":
-    total_size = 0
-    line_count = 0
-    status_codes = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0, "404": 0, "405": 0, "500": 0}
+total_file_size = 0
+code = 0
+counter = 0
+dict_sc = {"200": 0,
+           "301": 0,
+           "400": 0,
+           "401": 0,
+           "403": 0,
+           "404": 0,
+           "405": 0,
+           "500": 0}
 
-    try:
-        for line in sys.stdin:
-            parts = line.split()
+try:
+    for line in sys.stdin:
+        parsed_line = line.split()
+        parsed_line = parsed_line[::-1]
 
-            if len(parts) > 6:
-                # Parse and update the status code and file size
-                status_code = parts[-2]
-                file_size = parts[-1]
+        if len(parsed_line) > 2:
+            counter += 1
 
-                # Update total file size
-                try:
-                    total_size += int(file_size)
-                except ValueError:
-                    continue
+            if counter <= 10:
+                total_file_size += int(parsed_line[0])
+                code = parsed_line[1]
 
-                # Update status code count if valid
-                if status_code in status_codes:
-                    status_codes[status_code] += 1
+                if (code in dict_sc.keys()):
+                    dict_sc[code] += 1
 
-                # Increment line count
-                line_count += 1
+            if (counter == 10):
+                print_msg(dict_sc, total_file_size)
+                counter = 0
 
-                # Print stats every 10 lines
-                if line_count % 10 == 0:
-                    print_stats(status_codes, total_size)
-
-    except KeyboardInterrupt:
-        print_stats(status_codes, total_size)
-        raise
-
-    # Final stats output after stdin completes
-    print_stats(status_codes, total_size)
+finally:
+    print_msg(dict_sc, total_file_size)
