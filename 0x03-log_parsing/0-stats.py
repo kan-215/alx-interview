@@ -1,58 +1,60 @@
 #!/usr/bin/python3
 
 import sys
-from collections import defaultdict
 
-def output_metrics(file_size_sum, status_counter):
+def print_msg(dict_sc, total_file_size):
     """
-    Prints the accumulated file size and counts of each HTTP status code.
-    
+    Function to output the current metrics.
     Args:
-        file_size_sum (int): Sum of all file sizes encountered.
-        status_counter (dict): Dictionary holding count of each status code.
+        dict_sc: dictionary storing status codes and their counts
+        total_file_size: cumulative file size
+    Returns:
+        None
     """
-    print("File size: {}".format(file_size_sum))
-    for status in sorted(status_counter):
-        if status_counter[status] > 0:
-            print("{}: {}".format(status, status_counter[status]))
+    
+    print("File size: {}".format(total_file_size))
+    for key, val in sorted(dict_sc.items()):
+        if val != 0:
+            print("{}: {}".format(key, val))
 
-# Initialize counters and storage
-file_size_sum = 0
-status_counter = defaultdict(int)
-line_count = 0
-valid_status_codes = {"200", "301", "400", "401", "403", "404", "405", "500"}
+
+# Initialize total file size and counters
+total_file_size = 0
+code = 0
+counter = 0
+dict_sc = {
+    "200": 0,
+    "301": 0,
+    "400": 0,
+    "401": 0,
+    "403": 0,
+    "404": 0,
+    "405": 0,
+    "500": 0
+}
 
 try:
+    # Read input line by line
     for line in sys.stdin:
-        # Split the input line into parts
-        parts = line.split()
-        
-        # Verify the line format before processing
-        if len(parts) >= 2:
-            try:
-                # Increment file size sum by the file size in this line
-                file_size_sum += int(parts[-1])
-                status_code = parts[-2]
+        parsed_line = line.split()  # Split line into components
+        parsed_line = parsed_line[::-1]  # Reverse list for easier indexing
 
-                # Increment status counter if status code is valid
-                if status_code in valid_status_codes:
-                    status_counter[status_code] += 1
-            except ValueError:
-                # Ignore lines with non-integer file size
-                continue
-            
-            # Track number of lines processed
-            line_count += 1
+        if len(parsed_line) > 2:
+            counter += 1
 
-            # Every 10 lines, output current metrics
-            if line_count == 10:
-                output_metrics(file_size_sum, status_counter)
-                line_count = 0
+            if counter <= 10:
+                total_file_size += int(parsed_line[0])  # Add file size
+                code = parsed_line[1]  # Capture status code
+
+                # Update count for existing status code
+                if code in dict_sc.keys():
+                    dict_sc[code] += 1
+
+            # Every 10 lines, display current stats
+            if counter == 10:
+                print_msg(dict_sc, total_file_size)
+                counter = 0
 
 except KeyboardInterrupt:
-    # Print metrics if interrupted by Ctrl+C
-    output_metrics(file_size_sum, status_counter)
-    raise
-
-# Final output for remaining lines
-output_metrics(file_size_sum, status_counter)
+    # Print metrics on interruption (Ctrl+C)
+    print_msg(dict_sc, total_file_size)
