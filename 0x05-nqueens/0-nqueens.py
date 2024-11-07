@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-""" 0-N queens """
+""" N Queens Puzzle Solver """
 import sys
 
-
-if len(sys.argv) > 2 or len(sys.argv) < 2:
+# Validate command-line arguments
+if len(sys.argv) != 2:
     print("Usage: nqueens N")
     exit(1)
 
@@ -15,30 +15,21 @@ if int(sys.argv[1]) < 4:
     print("N must be at least 4")
     exit(1)
 
-n = int(sys.argv[1])
+N = int(sys.argv[1])
 
-
-def queens(n, j=0, a=[], b=[], c=[]):
-    """ find possible positions """
-    if j < n:
-        for i in range(n):
-            if i not in a and i + j not in b and i - j not in c:
-                yield from queens(n, i + 1, a + [j], b + [i + j], c + [j - i])
+def place_queens(N, row=0, columns=[], diag1=[], diag2=[]):
+    """Recursively generates solutions by placing queens row by row."""
+    if row < N:
+        for col in range(N):
+            if col not in columns and row + col not in diag1 and row - col not in diag2:
+                yield from place_queens(N, row + 1, columns + [col], diag1 + [row + col], diag2 + [row - col])
     else:
-        yield a
+        yield columns
 
+def solve_nqueens(N):
+    """Solve the N queens puzzle and print each solution."""
+    for solution in place_queens(N):
+        formatted_solution = [[row, solution[row]] for row in range(N)]
+        print(formatted_solution)
 
-def solve(n):
-    """ solve for n """
-    m = []
-    j = 0
-    for solution in queens(n, 0):
-        for t in solution:
-            m.append([j, t])
-            j += 1
-        print(m)
-        m = []
-        j = 0
-
-
-solve(n)
+solve_nqueens(N)
