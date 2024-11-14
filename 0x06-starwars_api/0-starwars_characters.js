@@ -2,13 +2,12 @@
 
 const request = require('request');
 
-// Get the Movie ID from the command-line arguments
 const movieId = process.argv[2];
 
-// Base URL for the Star Wars API
+// star wars base url
 const apiUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}/`;
 
-// Fetch the movie details using the movie ID
+// get the movie details using star wars movie id
 request(apiUrl, (error, response, body) => {
   if (error) {
     console.error('Error fetching data:', error);
@@ -18,10 +17,8 @@ request(apiUrl, (error, response, body) => {
   if (response.statusCode === 200) {
     const movieData = JSON.parse(body);
 
-    // Get the list of character URLs
     const characters = movieData.characters;
-
-    // Function to fetch and print each character's name
+//fetch character
     const fetchCharacter = (url) => {
       return new Promise((resolve, reject) => {
         request(url, (error, response, body) => {
@@ -41,7 +38,6 @@ request(apiUrl, (error, response, body) => {
       });
     };
 
-    // Fetch and print each character's name in sequence
     (async () => {
       for (const characterUrl of characters) {
         await fetchCharacter(characterUrl);
