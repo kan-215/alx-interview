@@ -7,11 +7,11 @@ Change-making problem solution.
 def makeChange(coins, total):
     """
     Determine the fewest number of coins needed to meet the total amount.
-    
+
     Args:
         coins (list): A list of coin denominations.
         total (int): The target total amount.
-    
+
     Returns:
         int: The fewest number of coins needed to make the total,
              or -1 if the total cannot be made.
